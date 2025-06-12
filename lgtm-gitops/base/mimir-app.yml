@@ -8,7 +8,7 @@ spec:
   sources:
   - repoURL: https://grafana.github.io/helm-charts
     chart: mimir-distributed
-    targetRevision: 5.8.0
+    targetRevision: 5.7.0
     helm:
       valueFiles:
         - $values/lgtm-gitops/apps/mimir/values.yml

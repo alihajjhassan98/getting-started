@@ -5,13 +5,16 @@ metadata:
   namespace: argocd
 spec:
   project: lgtm
-  source:
-    repoURL: https://grafana.github.io/helm-charts
+  sources:
+  - repoURL: https://grafana.github.io/helm-charts
     chart: grafana
     targetRevision: 7.3.9
     helm:
       valueFiles:
-        - lgtm-gitops/apps/grafana/values.yml
+        - $values/lgtm-gitops/apps/grafana/values.yml
+  - repoURL: 'https://github.com/alihajjhassan98/getting-started.git'
+    targetRevision: main
+    ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: lgtm-stack

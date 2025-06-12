@@ -1,0 +1,8 @@
+adminUser: admin
+adminPassword: secret
+persistence:
+  enabled: true
+  storageClassName: standard
+  size: 10Gi
+service:
+  type: LoadBalancer

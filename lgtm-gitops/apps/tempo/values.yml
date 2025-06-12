@@ -1,0 +1,28 @@
+reportingEnabled: false
+compactor:
+  config:
+    compaction:
+      block_retention: 336h # 14 days
+serviceAccount:
+  annotations:
+    iam.gke.io/gcp-service-account: lgtm-storage-admin@dotted-vortex-462612-a7.iam.gserviceaccount.com
+
+ingester:
+  persistence:
+    enabled: true
+  config:
+    complete_block_timeout: 5m
+    max_block_duration: 10m
+
+traces:
+  otlp:
+    grpc:
+      enabled: true
+    http:
+      enabled: true
+
+tempo:
+  structuredConfig:
+    query_frontend:
+      search:
+        max_duration: 336h0m0s

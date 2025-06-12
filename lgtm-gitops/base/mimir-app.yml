@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mimir
+  namespace: argocd
+spec:
+  project: lgtm
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: mimir
+    targetRevision: 5.3.0
+    helm:
+      valueFiles:
+        - ../apps/mimir/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: lgtm-stack
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

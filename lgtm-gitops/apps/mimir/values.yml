@@ -1,0 +1,28 @@
+mimir:
+  # -- Base config file for Grafana Mimir and Grafana Enterprise Metrics. Contains Helm templates that are evaulated at install/upgrade.
+  # To modify the resulting configuration, either copy and alter 'mimir.config' as a whole or use the 'mimir.structuredConfig' to add and modify certain YAML elements.
+
+  structuredConfig:
+    usage_stats:
+      enabled: false
+    limits:
+      max_global_series_per_user: 10000000
+      # enables exemplar storage
+      max_global_exemplars_per_user: 10000000
+    common:
+      storage:
+        backend: gcs
+    alertmanager_storage:
+      gcs:
+        bucket_name: mimir_bucket-1
+    ruler_storage:
+      gcs:
+        bucket_name: mimir_bucket-1
+    blocks_storage:
+      backend: gcs
+      gcs:
+        bucket_name:  mimir_bucket-1
+serviceAccount:
+    create: true
+    annotations:
+        iam.gke.io/gcp-service-account: lgtm-storage-admin@dotted-vortex-462612-a7.iam.gserviceaccount.com

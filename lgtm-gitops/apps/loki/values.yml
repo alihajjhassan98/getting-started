@@ -1,0 +1,25 @@
+loki:
+  storage:
+    bucketNames:
+      chunks:  loki_bucket-1
+    type: gcs
+  schemaConfig:
+    configs:
+      - from: 2024-04-01
+        store: tsdb
+        object_store: gcs
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+
+  memcached:
+    chunk_cache:
+      enabled: true
+    results_cache:
+      enabled: true
+
+serviceAccount:
+  create: true
+  annotations:
+      iam.gke.io/gcp-service-account: lgtm-storage-admin@dotted-vortex-462612-a7.iam.gserviceaccount.com

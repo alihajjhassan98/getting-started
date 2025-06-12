@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tempo
+  namespace: argocd
+spec:
+  project: lgtm
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: tempo
+    targetRevision: 1.9.2
+    helm:
+      valueFiles:
+        - ../apps/tempo/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: lgtm-stack
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

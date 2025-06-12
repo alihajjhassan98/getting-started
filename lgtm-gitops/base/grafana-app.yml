@@ -6,7 +6,7 @@ metadata:
 spec:
   project: lgtm
   source:
-    repoURL: https://github.com/alihajjhassan98/getting-started.git
+    repoURL: https://grafana.github.io/helm-charts
     chart: grafana
     targetRevision: 7.3.9
     helm:

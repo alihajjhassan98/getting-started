@@ -7,7 +7,7 @@ spec:
   project: lgtm
   sources:
   - repoURL: https://grafana.github.io/helm-charts
-    chart: mimir
+    chart: mimir-distributed
     targetRevision: 5.3.0
     helm:
       valueFiles:

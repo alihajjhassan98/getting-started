@@ -19,6 +19,11 @@ loki:
     results_cache:
       enabled: true
 
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClassName: standard
+
 serviceAccount:
   create: true
   annotations:

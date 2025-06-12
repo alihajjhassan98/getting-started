@@ -1,8 +1,9 @@
 loki:
   storage:
     bucketNames:
-      chunks:  loki_bucket-1
+      chunks: loki_bucket-1
     type: gcs
+
   schemaConfig:
     configs:
       - from: 2024-04-01
@@ -24,7 +25,12 @@ loki:
     size: 10Gi
     storageClassName: standard
 
+  containerSecurityContext:
+    runAsUser: 10001
+    runAsGroup: 10001
+    fsGroup: 10001
+
 serviceAccount:
   create: true
   annotations:
-      iam.gke.io/gcp-service-account: lgtm-storage-admin@dotted-vortex-462612-a7.iam.gserviceaccount.com
+    iam.gke.io/gcp-service-account: lgtm-storage-admin@dotted-vortex-462612-a7.iam.gserviceaccount.com

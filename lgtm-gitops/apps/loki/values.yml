@@ -5,6 +5,11 @@ loki:
       ruler: loki_bucket-1
     type: gcs
 
+  storage_config:
+    boltdb_shipper:
+      active_index_directory: /loki/index
+      cache_location: /loki/cache
+
   schemaConfig:
     configs:
       - from: 2024-04-01

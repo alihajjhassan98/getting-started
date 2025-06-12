@@ -2,6 +2,7 @@ loki:
   storage:
     bucketNames:
       chunks: loki_bucket-1
+      ruler: loki_bucket-1
     type: gcs
 
   schemaConfig:

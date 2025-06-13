@@ -112,12 +112,17 @@ users:
 """),
     opts=pulumi.ResourceOptions(depends_on=[cluster])
 )
+lgtm_ns = Namespace(
+    "gcp-lgtm-namespace",
+    metadata={"name": "lgtm-stack"},
+    opts=pulumi.ResourceOptions(provider=k8s_provider, depends_on=[k8s_provider])
+)
 
 gcp_key_secret = Secret(
     "gcp-sa-secret",
     metadata={
         "name": "gcp-sa-secret",
-        "namespace": "default",
+        "namespace": "lgtm-stack",
     },
     string_data={
         "gcp-sa.json": sa_key.private_key,
@@ -155,5 +160,6 @@ pulumi.export("gke_cluster_name", cluster.name)
 pulumi.export("loki_bucket", loki_bucket.name)
 pulumi.export("mimir_bucket", mimir_bucket.name)
 pulumi.export("service_account_email", storage_sa.email)
+pulumi.export("lgtm_namespace", lgtm_ns.metadata["name"])
 pulumi.export("k8s_secret_name", gcp_key_secret.metadata["name"])
 pulumi.export("argocd_namespace", argocd_ns.metadata["name"])

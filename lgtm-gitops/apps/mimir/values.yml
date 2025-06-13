@@ -1,6 +1,19 @@
 mimir:
   # -- Base config file for Grafana Mimir and Grafana Enterprise Metrics. Contains Helm templates that are evaulated at install/upgrade.
   # To modify the resulting configuration, either copy and alter 'mimir.config' as a whole or use the 'mimir.structuredConfig' to add and modify certain YAML elements.
+  gcs:
+    bucket_name: mimir_bucket-1
+    serviceAccount: /etc/gcp/gcp-sa.json
+
+  extraVolumes:
+    - name: gcp-sa
+      secret:
+        secretName: gcp-sa-secret
+
+  extraVolumeMounts:
+    - name: gcp-sa
+      mountPath: /etc/gcp
+      readOnly: true
 
   structuredConfig:
     usage_stats:

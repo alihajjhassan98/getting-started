@@ -1,4 +1,18 @@
 loki:
+  gcs:
+    bucket_name: loki_bucket-1
+    serviceAccount: /etc/gcp/gcp-sa.json
+
+  extraVolumes:
+    - name: gcp-sa
+      secret:
+        secretName: gcp-sa-secret
+
+  extraVolumeMounts:
+    - name: gcp-sa
+      mountPath: /etc/gcp
+      readOnly: true
+
   storage:
     bucketNames:
       chunks: loki_bucket-1

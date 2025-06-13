@@ -29,12 +29,13 @@ loki:
           prefix: index_
           period: 24h
 
-  persistence:
-    enabled: true
-    accessModes:
-      - ReadWriteOnce
-    size: 10Gi
-    storageClassName: standard
+  ingester:
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 10Gi
+      storageClassName: standard
 
   containerSecurityContext:
     runAsUser: 10001

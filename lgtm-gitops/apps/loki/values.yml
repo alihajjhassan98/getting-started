@@ -1,30 +1,18 @@
 loki:
-  persistence:
-    enabled: true
-    accessModes:
-      - ReadWriteOnce
-    size: 10Gi
-    storageClassName: standard
+  serviceAccount:
+    create: true
+    annotations:
+      iam.gke.io/gcp-service-account: loki-mimir-sa@dotted-vortex-462612-a7.iam.gserviceaccount.com
 
   gcs:
     bucket_name: loki_bucket-1
     serviceAccount: /etc/gcp/gcp-sa.json
 
-  extraVolumes:
-    - name: gcp-sa
-      secret:
-        secretName: gcp-sa-secret
-
-  extraVolumeMounts:
-    - name: gcp-sa
-      mountPath: /etc/gcp
-      readOnly: true
-
   storage:
+    type: gcs
     bucketNames:
       chunks: loki_bucket-1
       ruler: loki_bucket-1
-    type: gcs
 
   storage_config:
     boltdb_shipper:
@@ -41,17 +29,26 @@ loki:
           prefix: index_
           period: 24h
 
-  memcached:
-    chunk_cache:
-      enabled: true
-    results_cache:
-      enabled: true
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    storageClassName: standard
 
   containerSecurityContext:
     runAsUser: 10001
     runAsGroup: 10001
 
-serviceAccount:
-  create: true
-  annotations:
-    iam.gke.io/gcp-service-account: loki-mimir-sa@dotted-vortex-462612-a7.iam.gserviceaccount.com
+  securityContext:
+    fsGroup: 10001
+
+  extraVolumes:
+    - name: gcp-sa
+      secret:
+        secretName: gcp-sa-secret
+
+  extraVolumeMounts:
+    - name: gcp-sa
+      mountPath: /etc/gcp
+      readOnly: true

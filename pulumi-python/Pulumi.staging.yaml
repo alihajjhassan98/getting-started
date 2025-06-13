@@ -1,2 +1,5 @@
 config:
   gcp:project: dotted-vortex-462612-a7
+  gcp:region: us-central1
+  gcp:zone: us-central1-c
+  kubernetes:context: gke_dotted-vortex-462612-a7_us-central1-c_lgtm-stack-cluster

@@ -51,14 +51,14 @@ mimir_bucket_iam = storage.BucketIAMMember(
 
 cluster = container.Cluster(
     "gke-cluster",
-    min_master_version="1.26",  # You can change this to the latest available
-    node_version="1.26",
+    min_master_version="1.32.4-gke.1353003",
     name="lgtm-stack-cluster",
     location=zone,
     initial_node_count=1,
     remove_default_node_pool=True,
     networking_mode="VPC_NATIVE",
     ip_allocation_policy={},
+    deletion_protection=False,
 )
 
 node_pool = container.NodePool(
@@ -82,14 +82,15 @@ sa_key = serviceaccount.Key(
 
 k8s_provider = K8sProvider(
     "gke-k8s",
-kubeconfig=cluster.endpoint.apply(
-    lambda endpoint: pulumi.Output.all(
-        endpoint, cluster.name, cluster.master_auth.cluster_ca_certificate
-    ).apply(lambda args: f"""\
+    kubeconfig=pulumi.Output.all(
+        cluster.endpoint,
+        cluster.name,
+        cluster.master_auth
+    ).apply(lambda args: f"""
 apiVersion: v1
 clusters:
 - cluster:
-    certificate-authority-data: {args[2]}
+    certificate-authority-data: {args[2]['cluster_ca_certificate']}
     server: https://{args[0]}
   name: {args[1]}
 contexts:
@@ -104,18 +105,12 @@ users:
 - name: {args[1]}
   user:
     exec:
-      apiVersion: "client.authentication.k8s.io/v1beta1"
-      command: "gke-gcloud-auth-plugin"
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: gke-gcloud-auth-plugin
+      interactiveMode: IfAvailable
       provideClusterInfo: true
-    auth-provider:
-      config:
-        cmd-args: config config-helper --format=json
-        cmd-path: gcloud
-        expiry-key: '{{{{.credential.token_expiry}}}}'
-        token-key: '{{{{.credential.access_token}}}}'
-      name: gcp
-""")
-    )
+"""),
+    opts=pulumi.ResourceOptions(depends_on=[cluster])
 )
 
 gcp_key_secret = Secret(
@@ -127,19 +122,13 @@ gcp_key_secret = Secret(
     string_data={
         "gcp-sa.json": sa_key.private_key,
     },
-    opts=pulumi.ResourceOptions(provider=k8s_provider)
-)
-
-argocd_ns = Namespace(
-    "argocd-ns",
-    metadata={"name": "argocd"},
-    opts=pulumi.ResourceOptions(provider=k8s_provider)
+    opts=pulumi.ResourceOptions(provider=k8s_provider, depends_on=[k8s_provider])
 )
 
 argocd_ns = Namespace(
     "argocd-namespace",
     metadata={"name": "argocd"},
-    opts=pulumi.ResourceOptions(provider=k8s_provider),
+    opts=pulumi.ResourceOptions(provider=k8s_provider, depends_on=[k8s_provider])
 )
 
 argo_chart = Chart(
@@ -159,7 +148,7 @@ argo_chart = Chart(
             }
         }
     ),
-    opts=pulumi.ResourceOptions(provider=k8s_provider)
+    opts=pulumi.ResourceOptions(provider=k8s_provider,  depends_on=[k8s_provider])
 )
 
 pulumi.export("gke_cluster_name", cluster.name)

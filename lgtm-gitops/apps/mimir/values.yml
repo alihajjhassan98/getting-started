@@ -1,4 +1,3 @@
-mimir:
   # -- Base config file for Grafana Mimir and Grafana Enterprise Metrics. Contains Helm templates that are evaulated at install/upgrade.
   # To modify the resulting configuration, either copy and alter 'mimir.config' as a whole or use the 'mimir.structuredConfig' to add and modify certain YAML elements.
   gcs:
@@ -35,7 +34,14 @@ mimir:
       backend: gcs
       gcs:
         bucket_name:  mimir_bucket-1
-serviceAccount:
-    create: true
-    annotations:
-        iam.gke.io/gcp-service-account: loki-mimir-sa@dotted-vortex-462612-a7.iam.gserviceaccount.com
+
+  ingester:
+    persistence:
+      enabled: true
+      size: 10Gi
+      storageClassName: standard
+
+  serviceAccount:
+      create: true
+      annotations:
+          iam.gke.io/gcp-service-account: loki-mimir-sa@dotted-vortex-462612-a7.iam.gserviceaccount.com

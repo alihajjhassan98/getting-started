@@ -1,3 +1,5 @@
+ingester:
+
   serviceAccount:
     create: true
     annotations:
@@ -27,14 +29,13 @@
         index:
           prefix: index_
           period: 24h
-  
-  ingester:
-    persistence:
-      enabled: true
-      storageClassName: standard
-      accessModes:
-        - ReadWriteOnce
-      size: 10Gi
+
+  persistence:
+    enabled: true
+    storageClassName: standard
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
 
   containerSecurityContext:
     runAsUser: 10001

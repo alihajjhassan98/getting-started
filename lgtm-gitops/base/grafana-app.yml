@@ -15,6 +15,11 @@ spec:
   - repoURL: 'https://github.com/alihajjhassan98/getting-started.git'
     targetRevision: main
     ref: values
+  clusterResourceWhitelist:
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRoleBinding'
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRole'
   destination:
     server: https://kubernetes.default.svc
     namespace: lgtm-stack
@@ -22,8 +27,3 @@ spec:
     automated:
       selfHeal: true
       prune: true
-  clusterResourceWhitelist:
-    - group: 'rbac.authorization.k8s.io'
-      kind: 'ClusterRoleBinding'
-    - group: 'rbac.authorization.k8s.io'
-      kind: 'ClusterRole'

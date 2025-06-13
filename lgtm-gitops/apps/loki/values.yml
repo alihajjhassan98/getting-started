@@ -1,4 +1,11 @@
 loki:
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    storageClassName: standard
+
   gcs:
     bucket_name: loki_bucket-1
     serviceAccount: /etc/gcp/gcp-sa.json
@@ -23,6 +30,7 @@ loki:
     boltdb_shipper:
       active_index_directory: /var/loki/index
       cache_location: /var/loki/cache
+
   schemaConfig:
     configs:
       - from: 2024-04-01
@@ -38,11 +46,6 @@ loki:
       enabled: true
     results_cache:
       enabled: true
-
-  persistence:
-    enabled: true
-    size: 10Gi
-    storageClassName: standard
 
   containerSecurityContext:
     runAsUser: 10001

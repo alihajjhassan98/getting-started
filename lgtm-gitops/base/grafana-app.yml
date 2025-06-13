@@ -22,3 +22,8 @@ spec:
     automated:
       selfHeal: true
       prune: true
+  clusterResourceWhitelist:
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRoleBinding'
+    - group: 'rbac.authorization.k8s.io'
+      kind: 'ClusterRole'

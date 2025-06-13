@@ -140,7 +140,7 @@ argo_chart = Chart(
     "argo-cd",
     ChartOpts(
         chart="argo-cd",
-        version="3.35.4",
+        version="5.51.6",
         namespace=argocd_ns.metadata["name"],
         fetch_opts=FetchOpts(
             repo="https://argoproj.github.io/argo-helm"

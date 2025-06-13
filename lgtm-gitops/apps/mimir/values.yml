@@ -25,4 +25,4 @@ mimir:
 serviceAccount:
     create: true
     annotations:
-        iam.gke.io/gcp-service-account: lgtm-storage-admin@dotted-vortex-462612-a7.iam.gserviceaccount.com
+        iam.gke.io/gcp-service-account: loki-mimir-sa@dotted-vortex-462612-a7.iam.gserviceaccount.com
